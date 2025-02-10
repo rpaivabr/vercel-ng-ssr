@@ -1,0 +1,1 @@
+export default import('../dist/app-ssr/server/server.mjs').then(module => module.app());
