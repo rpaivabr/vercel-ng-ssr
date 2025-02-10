@@ -12,6 +12,12 @@ const indexHtml = join(serverDistFolder, 'index.server.html');
 const app = express();
 const commonEngine = new CommonEngine();
 
+// const accountSid = process.env["ACCOUNT_SID"];
+// const authToken = process.env["AUTH_TOKEN"];
+const accountSid = import.meta.env['NG_APP_ACCOUNT_SID'];
+const authToken = import.meta.env['NG_APP_AUTH_TOKEN'];
+const client = require("twilio")(accountSid, authToken);
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -23,6 +29,15 @@ const commonEngine = new CommonEngine();
  * });
  * ```
  */
+
+app.get('/api/messages', async (req, res) => {
+  const { sid } = await client.messages.create({
+    from: "whatsapp:+14155238886",
+    to: "whatsapp:+5519997646554",
+    body: "Hello ssr!",
+  });
+  res.send(`Mensagem enviada com sucesso! SID: ${sid}`);
+});
 
 /**
  * Serve static files from /browser
